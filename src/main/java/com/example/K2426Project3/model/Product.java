@@ -17,4 +17,5 @@ public class Product {
     private float price;
     private String pname;
     private int cid;
+    private int fid;
 }

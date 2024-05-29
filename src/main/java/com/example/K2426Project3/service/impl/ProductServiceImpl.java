@@ -1,10 +1,14 @@
 package com.example.K2426Project3.service.impl;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.example.K2426Project3.model.Product;
+import com.example.K2426Project3.model.ProductFile;
+import com.example.K2426Project3.repository.FileRepository;
 import com.example.K2426Project3.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.K2426Project3.repository.ProductRepository;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +17,8 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
-
+@Autowired
+private FileRepository fileRepository;
     @Override
     public List<Product> list() {
         List<Product> products = productRepository.findAll();
@@ -40,5 +45,30 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void delete(int id) {
         productRepository.deleteById(id);
+    }
+
+    @Override
+    public ProductFile getFile(int fid) {
+        ProductFile file = fileRepository.findById(fid).get();
+        return file ;
+    }
+
+    @Override
+    public List<Product> listByIds(List<Integer> idList) {
+        return productRepository.findAllById(idList);
+    }
+
+    @Override
+    public ProductFile saveFile(MultipartFile file) {
+        try {
+            ProductFile productFile = new ProductFile();
+            productFile.setFileName(file.getOriginalFilename());
+            productFile.setContent(file.getBytes());
+            productFile.setContentType(file.getContentType());
+            return fileRepository.save(productFile);
+        }catch (Exception  e){
+            throw new RuntimeException(e);
+        }
+
     }
 }

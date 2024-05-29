@@ -2,6 +2,7 @@ package com.example.K2426Project3.controller;
 
 import com.example.K2426Project3.model.User;
 import com.example.K2426Project3.service.UserService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -27,6 +28,7 @@ public class UserController {
             mess1 = "Tai khoan da ton tai";
         }
         session.setAttribute("checkR", 1);
+        session.setAttribute("test",1);
         model.addAttribute("user", new User());
         model.addAttribute("mess1", mess1);
         return "user/register";
@@ -66,6 +68,7 @@ public class UserController {
             session.setAttribute("checkL", 2);
             return "redirect:/login";
         }
+        session.setAttribute("count",0);
         session.setAttribute("name",user.getName());
         session.setMaxInactiveInterval(15);
         return "redirect:/product";
